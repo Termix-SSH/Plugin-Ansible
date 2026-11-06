@@ -34,6 +34,10 @@
       "readOnly": {
         "label": "Read only",
         "description": "Show playbooks and runs but never edit files or start runs on this host."
+      },
+      "alertRuns": {
+        "label": "Alert when a run fails",
+        "description": "Send an alert when a run on this host ends failed or lost. Checked when run state is read."
       }
     }
   },
@@ -176,6 +180,29 @@
       "limit": "Limit",
       "tags": "Tags",
       "check": "Check mode"
+    },
+    "runs": {
+      "title": "List runs",
+      "resource": "Runs",
+      "started": "Started",
+      "check": "Check mode"
+    },
+    "failed": {
+      "title": "Failed runs"
     }
+  },
+  "card": {
+    "title": "Ansible",
+    "loading": "Checking hosts...",
+    "summary_one": "{{count}} failed run on {{hosts}} hosts",
+    "summary_other": "{{count}} failed runs on {{hosts}} hosts",
+    "refresh": "Check again",
+    "empty": "Turn on Ansible for a host to see its runs here.",
+    "failed_one": "{{count}} failed",
+    "failed_other": "{{count}} failed",
+    "running_one": "{{count}} running",
+    "running_other": "{{count}} running",
+    "last": "{{title}}: {{state}}",
+    "noRuns": "No runs yet"
   }
 }

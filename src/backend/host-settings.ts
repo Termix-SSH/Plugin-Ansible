@@ -5,6 +5,7 @@ export interface HostSettings {
   projectDir: string;
   vaultPasswordFile: string;
   readOnly: boolean;
+  alerts: boolean;
 }
 
 const PATH_RE = /^[A-Za-z0-9._~/-]+$/;
@@ -24,6 +25,7 @@ export function parseHostSettings(
     projectDir: cleanPath(values.projectDir, "~/ansible"),
     vaultPasswordFile: cleanPath(values.vaultPasswordFile, ""),
     readOnly: values.readOnly === true,
+    alerts: values.alertRuns !== false,
   };
 }
 
