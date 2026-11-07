@@ -26,6 +26,7 @@ Read the [docs](https://docs.termix.site/plugins/ansible) to set it up and use i
 - Live run output, a recap per host and run history
 - Run ad-hoc modules on any hosts
 - Gather and read facts from hosts
+- Run and list playbooks through Termix actions
 
 <br />
 ## Sponsors
