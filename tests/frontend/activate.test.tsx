@@ -77,6 +77,38 @@ function api(current: unknown) {
 const host = { id: 1, name: "control", enableSsh: true };
 
 describe(`${manifest.id} activate`, () => {
+  it("registers a dashboard card showing recent runs per host", async () => {
+    rendered = await renderWithApp(plugin, {
+      manifest,
+      locales,
+      permissions: ["ansible.use"],
+      hosts: [{ id: "7", name: "control", ip: "10.0.0.7", port: 22 }],
+      api: {
+        get: vi.fn(async () => ({
+          data: [
+            {
+              hostId: 7,
+              running: 0,
+              failed: 2,
+              last: {
+                id: "1-aaaaaa",
+                title: "site.yml",
+                state: "failed",
+                startedAt: 1700000000000,
+              },
+              checkedAt: "",
+            },
+          ],
+        })),
+      } as never,
+    });
+    expect(rendered.registered.dashboardCards()).toEqual(["ansible-hosts"]);
+    rendered.renderDashboardCard("ansible-hosts");
+    expect(await screen.findByText("control")).toBeTruthy();
+    expect(screen.getByText("2 failed")).toBeTruthy();
+    expect(screen.getByText("site.yml: Failed")).toBeTruthy();
+  });
+
   it("registers the host tab", async () => {
     rendered = await renderWithApp(plugin, { manifest, locales });
     expect(rendered.registered.tabs()).toEqual(["ansible"]);

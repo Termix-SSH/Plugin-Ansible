@@ -31,7 +31,9 @@
     "ssh:connect",
     "network:serve",
     "ui:surface",
-    "operations:provide"
+    "operations:provide",
+    "kv:own",
+    "notify:send"
   ],
   "contributes": {
     "tabs": [
@@ -83,6 +85,14 @@
             "descriptionKey": "settings.host.readOnly.description",
             "default": false,
             "requires": "enableAnsible"
+          },
+          {
+            "key": "alertRuns",
+            "type": "boolean",
+            "labelKey": "settings.host.alertRuns.label",
+            "descriptionKey": "settings.host.alertRuns.description",
+            "default": true,
+            "requires": "enableAnsible"
           }
         ]
       }
@@ -104,6 +114,40 @@
           "surfaces": {
             "assistant": true,
             "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "ansible.list-runs",
+          "titleKey": "operations.runs.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableAnsible": true
+            }
+          },
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
+        },
+        {
+          "id": "ansible.failed",
+          "titleKey": "operations.failed.title",
+          "scope": "host",
+          "risk": "read",
+          "permission": "use",
+          "hostAccess": "connect",
+          "when": {
+            "settings": {
+              "enableAnsible": true
+            }
+          },
+          "surfaces": {
             "palette": false
           }
         },
@@ -150,8 +194,48 @@
             "mcp": true
           }
         }
+      ],
+      "signals": [
+        {
+          "id": "ansible.failed",
+          "titleKey": "operations.failed.title",
+          "read": "ansible.failed",
+          "scope": "host",
+          "kind": "count",
+          "refreshSec": 300
+        }
+      ],
+      "resources": [
+        {
+          "id": "ansible.run",
+          "titleKey": "operations.runs.resource",
+          "icon": "Workflow",
+          "list": "ansible.list-runs",
+          "key": "id",
+          "name": "name",
+          "status": "state",
+          "tab": "ansible",
+          "columns": [
+            {
+              "key": "startedAt",
+              "titleKey": "operations.runs.started",
+              "type": "time"
+            },
+            {
+              "key": "check",
+              "titleKey": "operations.runs.check"
+            }
+          ]
+        }
       ]
-    }
+    },
+    "dashboardCards": [
+      {
+        "id": "ansible-hosts",
+        "titleKey": "card.title",
+        "icon": "Workflow"
+      }
+    ]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

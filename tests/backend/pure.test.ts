@@ -85,6 +85,10 @@ describe("scripts", () => {
   it("keeps the project folder quoted", () => {
     expect(statusScript("~/my dir")).toContain("P='~/my dir'");
   });
+
+  it("switches to a UTF-8 locale, since Ansible refuses LC_ALL=C", () => {
+    expect(statusScript("~/ansible")).toContain('export LC_ALL="$L" LANG="$L"');
+  });
 });
 
 describe("inventory", () => {

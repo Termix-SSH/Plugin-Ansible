@@ -97,3 +97,19 @@ export interface FactsHost {
   message: string;
   facts: Record<string, unknown>;
 }
+
+/** One host in the Ansible dashboard card. */
+export interface AnsibleHostSummary {
+  hostId: number;
+  checkedAt: string;
+  running: number;
+  /** Runs in the last 7 days that failed or were lost. */
+  failed: number;
+  last: {
+    id: string;
+    title: string;
+    state: RunState;
+    startedAt: number;
+  } | null;
+  error?: string;
+}
